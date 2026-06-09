@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Caída Libre — Actividad Interactiva · Física Nivel Superior</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css" rel="stylesheet"/>
+<style>
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #f7f6f2;
+  --surface: #ffffff;
+  --surface2: #f0ede6;
+  --border: #e2ddd4;
+  --border2: #c8c2b6;
+  --text: #1a1816;
+  --text2: #5a554e;
+  --text3: #8c8780;
+  --b50: #E6F1FB; --b200: #85B7EB; --b400: #378ADD; --b600: #185FA5; --b800: #0C447C; --b900: #042C53;
+  --t50: #E1F5EE; --t400: #1D9E75; --t600: #0F6E56; --t800: #085041;
+  --a50: #FAEEDA; --a200: #FAC775; --a400: #BA7517; --a600: #854F0B;
+  --g50: #EAF3DE; --g400: #639922; --g600: #3B6D11; --g800: #27500A;
+  --r50: #FCEBEB; --r200: #F09595; --r600: #A32D2D; --r800: #791F1F;
+  --radius-sm: 6px; --radius-md: 10px; --radius-lg: 14px; --radius-xl: 20px;
+  --shadow: 0 1px 3px rgba(0,0,0,.06), 0 4px 12px rgba(0,0,0,.04);
+  --shadow-md: 0 2px 8px rgba(0,0,0,.08), 0 8px 24px rgba(0,0,0,.06);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Source Sans 3', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* ===== LAYOUT ===== */
+.page-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow);
+}
+.header-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  gap: 1rem;
+}
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  color: var(--text);
+  text-decoration: none;
+}
+.header-logo .dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--b800);
+}
+.header-badge {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  background: var(--b50);
+  color: var(--b800);
+  border: 1px solid var(--b200);
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+/* ===== SECTIONS ===== */
+.section { display: none; }
+.section.active { display: block; animation: fadeIn .3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ===== HERO ===== */
+.hero {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 3.5rem 2rem;
+  text-align: center;
+  box-shadow: var(--shadow);
+  margin-bottom: 0;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 220px; height: 220px;
+  border-radius: 50%;
+  background: var(--b50);
+  opacity: .7;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -40px; left: -40px;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: var(--t50);
+  opacity: .6;
+}
+.hero-content { position: relative; z-index: 1; }
+.hero-tag {
+  display: inline-block;
+  background: var(--b800);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 5px 16px;
+  border-radius: 20px;
+  margin-bottom: 1.25rem;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: var(--text);
+  line-height: 1.15;
+  margin-bottom: .75rem;
+}
+.hero p {
+  font-size: 1.05rem;
+  color: var(--text2);
+  max-width: 520px;
+  margin: 0 auto 2rem;
+  line-height: 1.7;
+}
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  margin-bottom: 2.25rem;
+}
+.hero-stat .num {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--b800);
+  font-family: 'Courier New', monospace;
+  line-height: 1;
+}
+.hero-stat .lbl {
+  font-size: 12px;
+  color: var(--text3);
+  margin-top: 3px;
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 26px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: 'Source Sans 3', sans-serif;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all .2s;
+  text-decoration: none;
+  border: none;
+}
+.btn-primary { background: var(--b800); color: #fff; }
+.btn-primary:hover { background: var(--b900); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.btn-primary:active { transform: translateY(0); }
+.btn-outline {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border2);
+}
+.btn-outline:hover { background: var(--surface2); }
+.btn-sm { padding: 8px 16px; font-size: 13px; }
+
+/* ===== TAB NAV ===== */
+.content-layout { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl); box-shadow: var(--shadow); overflow: hidden; }
+.tab-nav {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+  overflow-x: auto;
+}
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 14px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text2);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: 'Source Sans 3', sans-serif;
+  transition: all .2s;
+}
+.tab-btn:hover:not(.active) { color: var(--text); background: rgba(0,0,0,.03); }
+.tab-btn.active { color: var(--b800); border-bottom-color: var(--b800); background: var(--surface); font-weight: 600; }
+.tab-panel { display: none; padding: 2rem 2rem 2.5rem; }
+.tab-panel.active { display: block; }
+
+/* ===== THEORY ===== */
+.theory-section { margin-bottom: 2.25rem; }
+.theory-section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.45rem;
+  color: var(--text);
+  margin-bottom: .9rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid var(--border);
+}
+.theory-section h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--b800);
+  margin: 1.25rem 0 .5rem;
+}
+.theory-section p { font-size: 15px; color: var(--text2); line-height: 1.8; margin-bottom: .75rem; }
+
+.formula-box {
+  background: var(--b50);
+  border: 1px solid var(--b200);
+  border-radius: var(--radius-lg);
+  padding: 1.4rem 1.6rem;
+  margin: 1.1rem 0;
+}
+.formula-box .flabel {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  color: var(--b600);
+  margin-bottom: .9rem;
+}
+.formula-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: .65rem;
+  padding-bottom: .65rem;
+  border-bottom: 1px solid rgba(133,183,235,.3);
+}
+.formula-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+.formula-eq {
+  font-family: 'Courier New', monospace;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--b800);
+  min-width: 175px;
+  flex-shrink: 0;
+}
+.formula-desc { font-size: 14px; color: var(--text2); line-height: 1.55; }
+
+.concept-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin: 1rem 0;
+}
+.concept-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.1rem;
+  text-align: center;
+}
+.concept-card .cv {
+  font-family: 'Courier New', monospace;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--b800);
+  margin-bottom: 5px;
+}
+.concept-card .cd { font-size: 12px; color: var(--text3); line-height: 1.4; }
+
+.note-box {
+  border-left: 3px solid var(--a400);
+  background: var(--a50);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  padding: .9rem 1.1rem;
+  margin: 1rem 0;
+}
+.note-box p { font-size: 14px; color: var(--a600); margin: 0; line-height: 1.6; }
+
+.section-cta {
+  text-align: center;
+  padding: 1.5rem 0 .25rem;
+  border-top: 1px solid var(--border);
+  margin-top: 1.5rem;
+}
+
+/* ===== EXAMPLE ===== */
+.example-header {
+  background: var(--t50);
+  border: 1px solid rgba(29,158,117,.2);
+  border-radius: var(--radius-lg);
+  padding: 1.4rem 1.6rem;
+  margin-bottom: 1.75rem;
+}
+.example-header .etag {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  color: var(--t600);
+  margin-bottom: .4rem;
+}
+.example-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  color: var(--text);
+  margin-bottom: .5rem;
+}
+.example-header p { font-size: 14px; color: var(--text2); margin: 0; line-height: 1.65; }
+
+.step {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  margin-bottom: 1rem;
+  overflow: hidden;
+  transition: box-shadow .2s;
+}
+.step:hover { box-shadow: var(--shadow); }
+.step-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: .9rem 1.2rem;
+  background: var(--surface);
+}
+.step-num {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: var(--b800);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.step-title { font-size: 15px; font-weight: 600; color: var(--text); }
+.step-body {
+  padding: 1rem 1.2rem 1.1rem;
+  border-top: 1px solid var(--border);
+  background: var(--surface2);
+}
+.step-body p { font-size: 14px; color: var(--text2); line-height: 1.7; margin-bottom: .5rem; }
+.step-body p:last-child { margin-bottom: 0; }
+.step-eq {
+  display: block;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--t600);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: .5rem .85rem;
+  margin: .5rem 0;
+}
+
+.result-box {
+  background: var(--t50);
+  border: 1px solid var(--t400);
+  border-radius: var(--radius-md);
+  padding: 1.1rem 1.4rem;
+  margin-top: 1.25rem;
+  text-align: center;
+}
+.result-box .rlabel {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  color: var(--t600);
+  margin-bottom: 6px;
+}
+.result-box .rval {
+  font-family: 'Courier New', monospace;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--t800);
+  line-height: 1.5;
+}
+
+/* ===== EVAL GATE ===== */
+.eval-gate { text-align: center; padding: 2.5rem 1rem; }
+.eval-gate h2 { font-family: 'Playfair Display', serif; font-size: 1.6rem; margin-bottom: .75rem; }
+.eval-gate p { font-size: 15px; color: var(--text2); line-height: 1.7; margin-bottom: 1.75rem; max-width: 480px; margin-left: auto; margin-right: auto; }
+.eval-stats { display: flex; justify-content: center; gap: 2.5rem; margin-bottom: 2rem; }
+.eval-stat .num { font-family: 'Courier New', monospace; font-size: 1.8rem; font-weight: 700; color: var(--b800); }
+.eval-stat .lbl { font-size: 12px; color: var(--text3); }
+
+.name-form { max-width: 400px; margin: 0 auto 1.75rem; text-align: left; }
+.name-form label { display: block; font-size: 14px; font-weight: 600; color: var(--text2); margin-bottom: 6px; }
+.name-form input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-family: 'Source Sans 3', sans-serif;
+  background: var(--surface);
+  color: var(--text);
+  transition: border-color .2s, box-shadow .2s;
+}
+.name-form input:focus { outline: none; border-color: var(--b400); box-shadow: 0 0 0 3px rgba(55,138,221,.15); }
+
+.locked-msg { text-align: center; padding: 3rem 1rem; }
+.locked-icon { font-size: 3rem; color: var(--text3); margin-bottom: 1rem; }
+.locked-msg h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: .75rem; }
+.locked-msg p { font-size: 15px; color: var(--text2); line-height: 1.65; }
+
+/* ===== QUIZ ===== */
+.quiz-wrap { padding: 2rem 1.5rem 2.5rem; }
+.quiz-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.quiz-meta { font-size: 13px; color: var(--text2); }
+.quiz-meta strong { color: var(--text); }
+.timer-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--b50);
+  border: 1px solid var(--b200);
+  border-radius: 20px;
+  padding: 5px 16px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--b800);
+  font-family: 'Courier New', monospace;
+  transition: all .3s;
+}
+.timer-pill.urgent { background: var(--r50); color: var(--r600); border-color: var(--r200); }
+
+.progress-track { height: 5px; background: var(--border); border-radius: 3px; margin-bottom: 1.75rem; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--b800); border-radius: 3px; transition: width .4s ease; }
+
+.question-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.6rem;
+  margin-bottom: 1.1rem;
+  box-shadow: var(--shadow);
+}
+.question-num {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  color: var(--text3);
+  margin-bottom: .5rem;
+}
+.question-text { font-size: 15px; font-weight: 500; color: var(--text); line-height: 1.65; margin-bottom: 1.4rem; }
+.options { display: flex; flex-direction: column; gap: 9px; }
+.option {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all .15s;
+  background: var(--surface2);
+  user-select: none;
+}
+.option:hover { border-color: var(--b400); background: var(--b50); }
+.option.selected { background: var(--b50); border-color: var(--b400); }
+.option-badge {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--border2);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text2);
+  flex-shrink: 0;
+  transition: all .15s;
+}
+.option.selected .option-badge { background: var(--b800); color: #fff; border-color: var(--b800); }
+.option-text { font-size: 14px; color: var(--text2); line-height: 1.5; padding-top: 3px; }
+.option.selected .option-text { color: var(--b800); font-weight: 500; }
+
+.quiz-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.dots { display: flex; gap: 6px; flex-wrap: wrap; }
+.dot {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--border2);
+  transition: background .2s;
+  cursor: default;
+}
+.dot.answered { background: var(--b800); }
+.dot.current { background: var(--b200); outline: 2px solid var(--b800); }
+
+/* ===== RESULTS ===== */
+.results-wrap { padding: 2.5rem 1.5rem; text-align: center; }
+.score-ring {
+  width: 130px; height: 130px;
+  border-radius: 50%;
+  border: 4px solid var(--b200);
+  background: var(--b50);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+}
+.score-ring .snum { font-size: 2.2rem; font-weight: 700; color: var(--b800); font-family: 'Courier New', monospace; line-height: 1; }
+.score-ring .slbl { font-size: 12px; color: var(--b600); margin-top: 3px; }
+.results-wrap h2 { font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: .4rem; }
+.results-wrap .rname { font-size: 14px; color: var(--text3); margin-bottom: 1.5rem; }
+.mail-status {
+  font-size: 13px;
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  margin: .75rem auto;
+  max-width: 460px;
+  text-align: center;
+}
+.mail-ok { background: var(--g50); color: var(--g800); border: 1px solid rgba(99,153,34,.25); }
+.mail-err { background: var(--r50); color: var(--r800); border: 1px solid var(--r200); }
+.mail-sending { background: var(--b50); color: var(--b800); border: 1px solid var(--b200); }
+
+.review-section { text-align: left; margin-top: 2rem; }
+.review-section h3 {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  color: var(--text3);
+  margin-bottom: 1rem;
+}
+.answer-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: .85rem 1.1rem;
+  margin-bottom: 8px;
+  background: var(--surface2);
+}
+.answer-item.correct { border-color: rgba(99,153,34,.4); background: var(--g50); }
+.answer-item.wrong { border-color: var(--r200); background: var(--r50); }
+.answer-item .aq { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.answer-item .aa { font-size: 12px; color: var(--text2); line-height: 1.5; }
+.answer-item.correct .aa { color: var(--g800); }
+.answer-item.wrong .aa { color: var(--r800); }
+
+/* ===== LISTA ===== */
+.lista-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.lista-header h2 { font-family: 'Playfair Display', serif; font-size: 1.25rem; margin-bottom: 2px; }
+.lista-header p { font-size: 13px; color: var(--text3); }
+.lista-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+  margin-bottom: 1.5rem;
+}
+.stat-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  text-align: center;
+}
+.stat-card .sv { font-family: 'Courier New', monospace; font-size: 1.5rem; font-weight: 700; color: var(--b800); }
+.stat-card .sl { font-size: 12px; color: var(--text3); margin-top: 3px; }
+
+.table-wrap { overflow-x: auto; }
+table.results-tbl { width: 100%; border-collapse: collapse; font-size: 14px; }
+table.results-tbl th {
+  text-align: left;
+  padding: 9px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--text3);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+table.results-tbl td {
+  padding: 11px 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: middle;
+}
+table.results-tbl tr:last-child td { border-bottom: none; }
+table.results-tbl tr:hover td { background: var(--surface2); }
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.badge-high { background: var(--g50); color: var(--g800); border: 1px solid rgba(99,153,34,.3); }
+.badge-mid  { background: var(--a50); color: var(--a600); border: 1px solid rgba(186,117,23,.3); }
+.badge-low  { background: var(--r50); color: var(--r800); border: 1px solid var(--r200); }
+
+.empty { text-align: center; padding: 3rem 1rem; color: var(--text3); font-size: 14px; }
+.empty i { font-size: 2.5rem; display: block; margin-bottom: .75rem; }
+
+/* ===== FOOTER ===== */
+footer {
+  text-align: center;
+  padding: 2rem;
+  font-size: 12px;
+  color: var(--text3);
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  .tab-btn { padding: 12px 14px; font-size: 13px; }
+  .tab-panel { padding: 1.5rem 1.25rem; }
+  .hero { padding: 2.5rem 1.25rem; }
+  .hero-stats { gap: 1.5rem; }
+  .quiz-wrap { padding: 1.5rem 1.25rem; }
+  .formula-item { flex-direction: column; gap: 4px; }
+  .formula-eq { min-width: unset; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="page-header">
+  <div class="header-inner">
+    <a class="header-logo" href="#" onclick="goHome(); return false;">
+      <span class="dot"></span>
+      Caída Libre
+    </a>
+    <span class="header-badge">Física · Nivel Superior</span>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- HERO -->
+  <div id="sec-hero" class="section active">
+    <div class="hero">
+      <div class="hero-content">
+        <span class="hero-tag">Actividad Interactiva</span>
+        <h1>Caída libre</h1>
+        <p>Aprende la teoría, analiza un ejemplo resuelto paso a paso y pon a prueba tus conocimientos en una evaluación cronometrada con registro automático.</p>
+        <div class="hero-stats">
+          <div class="hero-stat"><div class="num">3</div><div class="lbl">secciones</div></div>
+          <div class="hero-stat"><div class="num">10</div><div class="lbl">preguntas</div></div>
+          <div class="hero-stat"><div class="num">15 min</div><div class="lbl">evaluación</div></div>
+        </div>
+        <button class="btn btn-primary" onclick="goContent('theory')">
+          <i class="ti ti-arrow-right"></i> Comenzar actividad
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div id="sec-content" class="section">
+    <div class="content-layout">
+      <nav class="tab-nav" role="tablist">
+        <button class="tab-btn active" onclick="showTab('theory',this)" role="tab">
+          <i class="ti ti-book"></i> Teoría
+        </button>
+        <button class="tab-btn" onclick="showTab('example',this)" role="tab">
+          <i class="ti ti-calculator"></i> Ejemplo resuelto
+        </button>
+        <button class="tab-btn" onclick="showTab('eval-gate',this)" role="tab">
+          <i class="ti ti-clipboard-check"></i> Evaluación
+        </button>
+        <button class="tab-btn" onclick="showTab('lista',this)" role="tab">
+          <i class="ti ti-list"></i> Lista de grupo
+        </button>
+      </nav>
+
+      <!-- ── THEORY ── -->
+      <div id="tab-theory" class="tab-panel active" role="tabpanel">
+
+        <div class="theory-section">
+          <h2>¿Qué es la caída libre?</h2>
+          <p>La caída libre es el movimiento de un cuerpo sometido exclusivamente a la fuerza gravitacional, sin ninguna otra fuerza actuando sobre él (en particular, sin resistencia del aire). Es un caso particular del movimiento rectilíneo uniformemente acelerado (MRUA) con aceleración constante dirigida hacia abajo.</p>
+          <div class="concept-grid">
+            <div class="concept-card">
+              <div class="cv">g = 9.8 m/s²</div>
+              <div class="cd">Aceleración gravitacional en la superficie terrestre</div>
+            </div>
+            <div class="concept-card">
+              <div class="cv">↓ constante</div>
+              <div class="cd">Dirección siempre hacia el centro de la Tierra</div>
+            </div>
+            <div class="concept-card">
+              <div class="cv">MRUA</div>
+              <div class="cd">Movimiento rectilíneo uniformemente acelerado</div>
+            </div>
+          </div>
+          <div class="note-box">
+            <p><strong>Principio de Galileo:</strong> Todos los cuerpos caen con la misma aceleración independientemente de su masa, en ausencia de resistencia del aire. Una pluma y una bola de acero caen igual en el vacío.</p>
+          </div>
+        </div>
+
+        <div class="theory-section">
+          <h3>Condiciones del modelo</h3>
+          <p>Para aplicar las ecuaciones de caída libre se asume que el movimiento ocurre cerca de la superficie terrestre (g ≈ constante), se desprecia la resistencia del aire, la única fuerza actuante es la gravedad (F = mg), y el eje positivo apunta hacia arriba.</p>
+        </div>
+
+        <div class="theory-section">
+          <h2>Ecuaciones cinemáticas</h2>
+          <p>Con el eje <em>y</em> positivo hacia arriba y g = 9.8 m/s², las cuatro ecuaciones que gobiernan el movimiento son:</p>
+          <div class="formula-box">
+            <div class="flabel">Ecuaciones de caída libre</div>
+            <div class="formula-item">
+              <span class="formula-eq">v = v₀ − g·t</span>
+              <span class="formula-desc">Velocidad en el instante t. v₀ es la velocidad inicial (positiva hacia arriba).</span>
+            </div>
+            <div class="formula-item">
+              <span class="formula-eq">y = y₀ + v₀·t − ½g·t²</span>
+              <span class="formula-desc">Posición en el instante t. y₀ es la posición inicial.</span>
+            </div>
+            <div class="formula-item">
+              <span class="formula-eq">v² = v₀² − 2g·Δy</span>
+              <span class="formula-desc">Relación velocidad-desplazamiento, sin involucrar el tiempo.</span>
+            </div>
+            <div class="formula-item">
+              <span class="formula-eq">Δy = ½(v + v₀)·t</span>
+              <span class="formula-desc">Desplazamiento usando la velocidad media.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="theory-section">
+          <h3>Variables y unidades (SI)</h3>
+          <div class="formula-box">
+            <div class="flabel">Glosario de variables</div>
+            <div class="formula-item"><span class="formula-eq">v₀ [m/s]</span><span class="formula-desc">Velocidad inicial. Positiva si el cuerpo va hacia arriba, negativa si va hacia abajo.</span></div>
+            <div class="formula-item"><span class="formula-eq">v [m/s]</span><span class="formula-desc">Velocidad en el instante t. Al subir disminuye; al bajar aumenta en magnitud.</span></div>
+            <div class="formula-item"><span class="formula-eq">g [m/s²]</span><span class="formula-desc">Aceleración gravitacional = 9.8 m/s². En las ecuaciones se resta porque apunta hacia abajo.</span></div>
+            <div class="formula-item"><span class="formula-eq">t [s]</span><span class="formula-desc">Tiempo transcurrido desde el instante inicial.</span></div>
+            <div class="formula-item"><span class="formula-eq">y, Δy [m]</span><span class="formula-desc">Posición o desplazamiento vertical. Positivo hacia arriba.</span></div>
+          </div>
+        </div>
+
+        <div class="theory-section">
+          <h2>Casos especiales importantes</h2>
+          <h3>Caída desde el reposo (v₀ = 0)</h3>
+          <p>El cuerpo comienza en reposo y cae bajo la gravedad. Las ecuaciones se simplifican: v = g·t y h = ½g·t².</p>
+          <h3>Lanzamiento vertical hacia arriba</h3>
+          <p>El cuerpo tiene velocidad inicial positiva. Sube hasta que v = 0 en el punto más alto, luego cae. La altura máxima es h_max = v₀²/(2g).</p>
+          <h3>Simetría del movimiento</h3>
+          <p>El tiempo de subida es igual al de bajada. El tiempo total de vuelo es T = 2v₀/g. El cuerpo regresa al nivel de lanzamiento con la misma rapidez con que fue lanzado, pero en sentido contrario.</p>
+          <div class="note-box">
+            <p><strong>En el punto más alto:</strong> la velocidad instantánea es cero, pero la aceleración sigue siendo g = 9.8 m/s² hacia abajo. El cuerpo no está en reposo más que un instante.</p>
+          </div>
+        </div>
+
+        <div class="section-cta">
+          <button class="btn btn-primary" onclick="showTab('example', document.querySelectorAll('.tab-btn')[1])">
+            Ver ejemplo resuelto <i class="ti ti-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── EXAMPLE ── -->
+      <div id="tab-example" class="tab-panel" role="tabpanel">
+        <div class="example-header">
+          <div class="etag">Ejercicio resuelto · Nivel superior</div>
+          <h2>Lanzamiento vertical hacia arriba desde un edificio</h2>
+          <p>Un estudiante lanza una pelota verticalmente hacia arriba desde el borde de un edificio de 25 m de altura con una velocidad inicial de 15 m/s. Determina: <strong>(a)</strong> la altura máxima que alcanza la pelota respecto al suelo, <strong>(b)</strong> el tiempo total hasta que golpea el suelo, y <strong>(c)</strong> la velocidad al impactar el suelo.</p>
+        </div>
+
+        <div class="step">
+          <div class="step-header"><div class="step-num">1</div><div class="step-title">Identificar datos y sistema de referencia</div></div>
+          <div class="step-body">
+            <p>Elegimos eje <em>y</em> positivo hacia arriba, con origen en el suelo.</p>
+            <p>— Posición inicial: <strong>y₀ = 25 m</strong> (altura del borde del edificio)</p>
+            <p>— Velocidad inicial: <strong>v₀ = +15 m/s</strong> (hacia arriba → positivo)</p>
+            <p>— Aceleración: <strong>a = −g = −9.8 m/s²</strong> (hacia abajo → negativo)</p>
+            <p>— Condición final: <strong>y = 0 m</strong> (cuando la pelota toca el suelo)</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header"><div class="step-num">2</div><div class="step-title">Parte (a): Altura máxima respecto al suelo</div></div>
+          <div class="step-body">
+            <p>En el punto más alto, v = 0. Usamos la ecuación sin tiempo:</p>
+            <span class="step-eq">v² = v₀² − 2g·(y_max − y₀)</span>
+            <p>Sustituyendo v = 0:</p>
+            <span class="step-eq">0 = (15)² − 2(9.8)(y_max − 25)</span>
+            <span class="step-eq">2(9.8)(y_max − 25) = 225</span>
+            <span class="step-eq">y_max − 25 = 225 / 19.6 ≈ 11.48 m</span>
+            <span class="step-eq">y_max ≈ 25 + 11.48 = 36.48 m ≈ 36.5 m</span>
+            <p>La pelota alcanza una altura máxima de aproximadamente <strong>36.5 m sobre el suelo</strong>.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header"><div class="step-num">3</div><div class="step-title">Parte (b): Tiempo total hasta impactar el suelo</div></div>
+          <div class="step-body">
+            <p>Usamos la ecuación de posición con y = 0:</p>
+            <span class="step-eq">0 = 25 + 15t − ½(9.8)t²</span>
+            <span class="step-eq">4.9t² − 15t − 25 = 0</span>
+            <p>Aplicamos la fórmula cuadrática (a = 4.9, b = −15, c = −25):</p>
+            <span class="step-eq">t = [15 ± √(225 + 4·4.9·25)] / (2·4.9)</span>
+            <span class="step-eq">t = [15 ± √(225 + 490)] / 9.8 = [15 ± √715] / 9.8</span>
+            <span class="step-eq">t = [15 ± 26.74] / 9.8</span>
+            <p>Tomamos la solución positiva (el tiempo no puede ser negativo):</p>
+            <span class="step-eq">t = (15 + 26.74) / 9.8 ≈ 41.74 / 9.8 ≈ 4.26 s</span>
+            <p>El tiempo total de vuelo es aproximadamente <strong>4.26 segundos</strong>.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header"><div class="step-num">4</div><div class="step-title">Parte (c): Velocidad al impactar el suelo</div></div>
+          <div class="step-body">
+            <p>Usamos la ecuación de velocidad con t = 4.26 s:</p>
+            <span class="step-eq">v = v₀ − g·t = 15 − 9.8 × 4.26</span>
+            <span class="step-eq">v = 15 − 41.75 = −26.75 m/s</span>
+            <p>El signo negativo indica dirección <strong>hacia abajo</strong> al impactar. La rapidez de impacto es:</p>
+            <span class="step-eq">|v| ≈ 26.75 m/s ≈ 96.3 km/h</span>
+          </div>
+        </div>
+
+        <div class="result-box">
+          <div class="rlabel">Resultados finales</div>
+          <div class="rval">h_max = 36.5 m &nbsp;·&nbsp; t_total = 4.26 s &nbsp;·&nbsp; |v_impacto| = 26.75 m/s</div>
+        </div>
+
+        <div class="section-cta">
+          <button class="btn btn-primary" onclick="showTab('eval-gate', document.querySelectorAll('.tab-btn')[2])">
+            Ir a la evaluación <i class="ti ti-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── EVAL GATE ── -->
+      <div id="tab-eval-gate" class="tab-panel" role="tabpanel">
+        <div id="eval-locked" style="display:none" class="locked-msg">
+          <div class="locked-icon"><i class="ti ti-lock"></i></div>
+          <h2>Evaluación ya completada</h2>
+          <p>Ya enviaste tus respuestas. La evaluación solo puede contestarse una vez. Tus resultados fueron registrados y enviados al profesor.</p>
+        </div>
+        <div id="eval-form">
+          <div class="eval-gate">
+            <h2>Evaluación: Caída libre</h2>
+            <p>10 preguntas de opción múltiple. Tienes <strong>15 minutos</strong> a partir del momento en que inicias. Solo puedes contestarla <strong>una vez</strong>; al enviar tus respuestas, la evaluación quedará bloqueada.</p>
+            <div class="eval-stats">
+              <div class="eval-stat"><div class="num">10</div><div class="lbl">preguntas</div></div>
+              <div class="eval-stat"><div class="num">15 min</div><div class="lbl">tiempo límite</div></div>
+              <div class="eval-stat"><div class="num">1 vez</div><div class="lbl">único intento</div></div>
+            </div>
+            <div class="name-form">
+              <label for="student-name">Nombre completo (nombre y apellidos)</label>
+              <input type="text" id="student-name" placeholder="Ej. María García López" autocomplete="name"/>
+            </div>
+            <button class="btn btn-primary" onclick="startEval()">
+              <i class="ti ti-player-play"></i> Iniciar evaluación
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── LISTA ── -->
+      <div id="tab-lista" class="tab-panel" role="tabpanel">
+        <div class="lista-header">
+          <div>
+            <h2>Lista de resultados del grupo</h2>
+            <p>Resultados registrados por los alumnos al completar la evaluación.</p>
+          </div>
+          <div class="lista-actions">
+            <button class="btn btn-outline btn-sm" onclick="loadList()">
+              <i class="ti ti-refresh"></i> Actualizar
+            </button>
+            <button class="btn btn-outline btn-sm" onclick="exportCSV()">
+              <i class="ti ti-download"></i> Exportar CSV
+            </button>
+          </div>
+        </div>
+        <div id="list-container">
+          <div class="empty"><i class="ti ti-clock"></i>Cargando resultados...</div>
+        </div>
+      </div>
+
+    </div><!-- /.content-layout -->
+  </div><!-- /#sec-content -->
+
+  <!-- QUIZ -->
+  <div id="sec-quiz" class="section">
+    <div class="content-layout">
+      <div class="quiz-wrap">
+        <div class="quiz-header">
+          <div class="quiz-meta">Pregunta <strong id="q-current">1</strong> de <strong>10</strong>&nbsp;&nbsp;·&nbsp;&nbsp;<span id="student-display"></span></div>
+          <div id="timer-pill" class="timer-pill">
+            <i class="ti ti-clock"></i>&nbsp;<span id="timer-display">15:00</span>
+          </div>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:10%"></div></div>
+        <div id="question-area"></div>
+        <div class="quiz-footer">
+          <div class="dots" id="dots-nav"></div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-outline" id="btn-prev" onclick="prevQ()" style="display:none">
+              <i class="ti ti-arrow-left"></i> Anterior
+            </button>
+            <button class="btn btn-primary" id="btn-next" onclick="nextQ()">
+              Siguiente <i class="ti ti-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="sec-results" class="section">
+    <div class="content-layout">
+      <div class="results-wrap">
+        <div class="score-ring">
+          <div class="snum" id="score-num">0/10</div>
+          <div class="slbl">calificación</div>
+        </div>
+        <h2 id="results-msg">Resultado</h2>
+        <p class="rname" id="results-student"></p>
+        <div id="mail-status"></div>
+        <div class="review-section" id="answers-review"></div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Actividad interactiva de Física · Caída libre · Nivel Superior &nbsp;|&nbsp; Resultados enviados a roberto_mct@tesco.edu.mx
+</footer>
+
+<script>
+/* ===== CONFIG ===== */
+const TEACHER_EMAIL = 'roberto_mct@tesco.edu.mx';
+const STORAGE_KEY   = 'caida_libre_group_v1';
+const LOCAL_KEY     = 'cf_eval_done_v1';
+
+/* ===== QUESTIONS ===== */
+const QUESTIONS = [
+  {
+    q: "Un objeto cae desde el reposo desde una altura de 80 m. ¿Cuánto tiempo tarda en llegar al suelo? (g = 9.8 m/s²)",
+    opts: ["2.86 s", "4.04 s", "3.19 s", "5.10 s"],
+    ans: 1,
+    exp: "h = ½g·t² → t = √(2h/g) = √(160/9.8) ≈ 4.04 s"
+  },
+  {
+    q: "¿Cuál es la velocidad de un objeto 3 segundos después de ser soltado desde el reposo en caída libre? (g = 9.8 m/s²)",
+    opts: ["19.6 m/s", "24.5 m/s", "29.4 m/s", "35.2 m/s"],
+    ans: 2,
+    exp: "v = g·t = 9.8 × 3 = 29.4 m/s (hacia abajo)"
+  },
+  {
+    q: "Se lanza una pelota verticalmente hacia arriba con v₀ = 20 m/s. ¿Cuál es la altura máxima que alcanza? (g = 9.8 m/s²)",
+    opts: ["15.3 m", "20.4 m", "25.0 m", "22.8 m"],
+    ans: 1,
+    exp: "h_max = v₀²/(2g) = 400/19.6 ≈ 20.4 m"
+  },
+  {
+    q: "En la caída libre, si se duplica el tiempo de caída, ¿cómo cambia la distancia recorrida?",
+    opts: ["Se duplica", "Se cuadruplica", "Se triplica", "Aumenta 8 veces"],
+    ans: 1,
+    exp: "d = ½g·t². Al duplicar t: d' = ½g·(2t)² = 4·(½g·t²). La distancia se cuadruplica."
+  },
+  {
+    q: "Una piedra se deja caer desde una torre y tarda 5 s en llegar al suelo. ¿Qué altura tiene la torre? (g = 9.8 m/s²)",
+    opts: ["98.0 m", "122.5 m", "245.0 m", "49.0 m"],
+    ans: 1,
+    exp: "h = ½g·t² = ½ × 9.8 × 25 = 122.5 m"
+  },
+  {
+    q: "Se lanza un objeto verticalmente hacia arriba con v₀ = 30 m/s. ¿Cuánto tiempo tarda en volver al punto de lanzamiento? (g = 9.8 m/s²)",
+    opts: ["3.06 s", "4.59 s", "6.12 s", "9.18 s"],
+    ans: 2,
+    exp: "Tiempo de subida: t_s = v₀/g = 30/9.8 ≈ 3.06 s. Tiempo total = 2 × 3.06 ≈ 6.12 s"
+  },
+  {
+    q: "Dos objetos con masas 1 kg y 5 kg se sueltan simultáneamente desde la misma altura en el vacío. ¿Cuál llega primero al suelo?",
+    opts: ["El de 5 kg, por su mayor masa", "El de 1 kg, por ser más liviano", "Llegan al mismo tiempo", "Depende de la forma de los objetos"],
+    ans: 2,
+    exp: "Principio de Galileo: en ausencia de fricción, todos los cuerpos caen con la misma aceleración g, sin importar su masa."
+  },
+  {
+    q: "Una pelota se lanza hacia arriba con v₀ = 25 m/s. ¿Cuál es su rapidez al encontrarse a 20 m de altura? (g = 9.8 m/s²)",
+    opts: ["15.3 m/s", "17.2 m/s", "11.8 m/s", "20.0 m/s"],
+    ans: 0,
+    exp: "v² = v₀² − 2g·h = 625 − 2(9.8)(20) = 625 − 392 = 233 → v ≈ 15.3 m/s"
+  },
+  {
+    q: "¿Cuál de las siguientes afirmaciones sobre la caída libre es INCORRECTA?",
+    opts: [
+      "La aceleración es constante e igual a g en todo el movimiento",
+      "La velocidad inicial puede ser cero o distinta de cero",
+      "La masa del objeto influye en la aceleración de caída",
+      "El movimiento es uniformemente acelerado"
+    ],
+    ans: 2,
+    exp: "La masa NO influye en la aceleración de caída libre. Todos los objetos caen con g = 9.8 m/s², independientemente de su masa."
+  },
+  {
+    q: "Un objeto se lanza verticalmente hacia abajo con v₀ = 5 m/s desde 50 m de altura. ¿Con qué velocidad impacta el suelo? (g = 9.8 m/s²)",
+    opts: ["31.7 m/s", "34.3 m/s", "28.6 m/s", "37.0 m/s"],
+    ans: 0,
+    exp: "v² = v₀² + 2g·h = 25 + 2(9.8)(50) = 25 + 980 = 1005 → v = √1005 ≈ 31.7 m/s"
+  }
+];
+
+/* ===== STATE ===== */
+let currentQ = 0;
+let answers  = new Array(10).fill(null);
+let studentName = '';
+let timerInterval = null;
+let secondsLeft   = 900;
+
+/* ===== NAVIGATION ===== */
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goHome() {
+  showSection('sec-hero');
+}
+
+function goContent(tab) {
+  showSection('sec-content');
+  const idx = { theory:0, example:1, 'eval-gate':2, lista:3 };
+  const btns = document.querySelectorAll('.tab-btn');
+  showTab(tab, btns[idx[tab] || 0]);
+}
+
+function showTab(name, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+  if (name === 'eval-gate') checkEvalLock();
+  if (name === 'lista') loadList();
+}
+
+function checkEvalLock() {
+  const done = localStorage.getItem(LOCAL_KEY);
+  document.getElementById('eval-locked').style.display = done ? 'block' : 'none';
+  document.getElementById('eval-form').style.display   = done ? 'none'  : 'block';
+}
+
+/* ===== EVAL START ===== */
+function startEval() {
+  const n = document.getElementById('student-name').value.trim();
+  const parts = n.split(' ').filter(Boolean);
+  if (!n || parts.length < 2) {
+    alert('Por favor ingresa tu nombre completo (nombre y al menos un apellido).');
+    return;
+  }
+  if (localStorage.getItem(LOCAL_KEY)) { checkEvalLock(); return; }
+  studentName = n;
+  currentQ = 0;
+  answers  = new Array(10).fill(null);
+  secondsLeft = 900;
+  document.getElementById('student-display').textContent = studentName;
+  showSection('sec-quiz');
+  renderQuestion();
+  buildDots();
+  startTimer();
+}
+
+/* ===== TIMER ===== */
+function startTimer() {
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    secondsLeft--;
+    const m = Math.floor(secondsLeft / 60);
+    const s = secondsLeft % 60;
+    document.getElementById('timer-display').textContent =
+      String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+    document.getElementById('timer-pill').classList.toggle('urgent', secondsLeft <= 120);
+    if (secondsLeft <= 0) { clearInterval(timerInterval); submitEval(true); }
+  }, 1000);
+}
+
+/* ===== RENDER QUESTION ===== */
+function renderQuestion() {
+  const q = QUESTIONS[currentQ];
+  const L = ['A','B','C','D'];
+  document.getElementById('question-area').innerHTML = `
+    <div class="question-card">
+      <div class="question-num">Pregunta ${currentQ + 1} de 10</div>
+      <div class="question-text">${q.q}</div>
+      <div class="options">
+        ${q.opts.map((opt, i) => `
+          <div class="option ${answers[currentQ] === i ? 'selected' : ''}" onclick="selectOpt(${i})">
+            <div class="option-badge">${L[i]}</div>
+            <div class="option-text">${opt}</div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+  document.getElementById('q-current').textContent = currentQ + 1;
+  document.getElementById('progress-fill').style.width = `${((currentQ + 1) / 10) * 100}%`;
+  document.getElementById('btn-prev').style.display = currentQ > 0 ? 'inline-flex' : 'none';
+  const nxt = document.getElementById('btn-next');
+  nxt.innerHTML = currentQ === 9
+    ? 'Enviar evaluación <i class="ti ti-send"></i>'
+    : 'Siguiente <i class="ti ti-arrow-right"></i>';
+}
+
+function selectOpt(i) { answers[currentQ] = i; renderQuestion(); updateDots(); }
+
+function buildDots() {
+  document.getElementById('dots-nav').innerHTML =
+    QUESTIONS.map((_, i) => `<div class="dot" id="dot-${i}"></div>`).join('');
+  updateDots();
+}
+
+function updateDots() {
+  QUESTIONS.forEach((_, i) => {
+    const d = document.getElementById('dot-' + i);
+    d.className = 'dot';
+    if (i === currentQ) d.classList.add('current');
+    else if (answers[i] !== null) d.classList.add('answered');
+  });
+}
+
+function nextQ() {
+  if (currentQ < 9) { currentQ++; renderQuestion(); updateDots(); }
+  else {
+    const u = answers.filter(a => a === null).length;
+    if (u > 0 && !confirm(`Tienes ${u} pregunta(s) sin responder. ¿Deseas enviar de todas formas?`)) return;
+    submitEval(false);
+  }
+}
+
+function prevQ() { if (currentQ > 0) { currentQ--; renderQuestion(); updateDots(); } }
+
+/* ===== SUBMIT ===== */
+async function submitEval(timeout) {
+  clearInterval(timerInterval);
+  let score = 0;
+  QUESTIONS.forEach((q, i) => { if (answers[i] === q.ans) score++; });
+  const now = new Date();
+  const record = {
+    nombre: studentName,
+    calificacion: score,
+    porcentaje: score * 10,
+    fecha: now.toLocaleDateString('es-MX'),
+    hora: now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
+    timeout
+  };
+  localStorage.setItem(LOCAL_KEY, '1');
+
+  /* Save to shared storage (JSON in localStorage key shared_cf) */
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const list = raw ? JSON.parse(raw) : [];
+    list.push(record);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+  } catch (e) { console.error('storage', e); }
+
+  showResults(score, timeout, record);
+  sendEmail(record, score);
+}
+
+/* ===== SHOW RESULTS ===== */
+function showResults(score, timeout, record) {
+  showSection('sec-results');
+  document.getElementById('score-num').textContent = `${score}/10`;
+  const pct = score * 10;
+  let msg = pct >= 90 ? '¡Excelente dominio del tema!'
+           : pct >= 70 ? 'Buen desempeño, sigue practicando'
+           : pct >= 50 ? 'Resultado regular, revisa los conceptos'
+           : 'Necesitas reforzar el estudio del tema';
+  if (timeout) msg = 'Tiempo agotado — ' + msg;
+  document.getElementById('results-msg').textContent = msg;
+  document.getElementById('results-student').textContent =
+    studentName + ' · ' + record.fecha + ' ' + record.hora;
+
+  const L = ['A','B','C','D'];
+  let html = '<h3>Revisión de respuestas</h3>';
+  QUESTIONS.forEach((q, i) => {
+    const ok  = answers[i] === q.ans;
+    const sel = answers[i] !== null ? `Tu respuesta: ${L[answers[i]]}. ${q.opts[answers[i]]}` : 'Sin responder';
+    const cor = !ok ? ` · Correcta: ${L[q.ans]}. ${q.opts[q.ans]}` : '';
+    html += `<div class="answer-item ${ok ? 'correct' : 'wrong'}">
+      <div class="aq">${i+1}. ${q.q}</div>
+      <div class="aa">${sel}${cor}</div>
+    </div>`;
+  });
+  document.getElementById('answers-review').innerHTML = html;
+}
+
+/* ===== SEND EMAIL ===== */
+async function sendEmail(record, score) {
+  const status = document.getElementById('mail-status');
+  status.className = 'mail-status mail-sending';
+  status.textContent = 'Preparando correo para el profesor...';
+
+  const L = ['A','B','C','D'];
+  let detalle = '';
+  QUESTIONS.forEach((q, i) => {
+    const ok  = answers[i] === q.ans;
+    const sel = answers[i] !== null ? L[answers[i]] + '. ' + q.opts[answers[i]] : 'Sin responder';
+    detalle += `P${i+1}: ${ok ? '✓' : '✗'} ${sel}\n`;
+  });
+
+  const body = `Resultado de evaluación — Caída libre\n\nAlumno: ${record.nombre}\nCalificación: ${score}/10 (${record.porcentaje}%)\nFecha: ${record.fecha}  Hora: ${record.hora}${record.timeout ? '  [TIEMPO AGOTADO]' : ''}\n\nDetalle por pregunta:\n${detalle}\nExplicaciones:\n${QUESTIONS.map((q,i)=>`P${i+1}: ${q.exp}`).join('\n')}`;
+  const subject = `Evaluación Caída Libre — ${record.nombre} — ${score}/10`;
+
+  const mailto = `mailto:${TEACHER_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  status.className = 'mail-status mail-ok';
+  status.innerHTML = `<i class="ti ti-check"></i> Resultados registrados. <a href="${mailto}" style="color:var(--g800);font-weight:600;text-decoration:underline">Haz clic aquí para enviar el correo al profesor</a>`;
+}
+
+/* ===== LISTA ===== */
+function loadList() {
+  const container = document.getElementById('list-container');
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const list = raw ? JSON.parse(raw) : [];
+    if (!list.length) {
+      container.innerHTML = '<div class="empty"><i class="ti ti-users"></i>Aún no hay resultados registrados en este equipo.</div>';
+      return;
+    }
+    list.sort((a, b) => b.calificacion - a.calificacion);
+    const avg = (list.reduce((s, r) => s + r.calificacion, 0) / list.length).toFixed(1);
+    const apr = list.filter(r => r.calificacion >= 7).length;
+    container.innerHTML = `
+      <div class="stats-grid">
+        <div class="stat-card"><div class="sv">${list.length}</div><div class="sl">Evaluados</div></div>
+        <div class="stat-card"><div class="sv">${avg}/10</div><div class="sl">Promedio</div></div>
+        <div class="stat-card"><div class="sv">${apr}</div><div class="sl">Aprobados ≥7</div></div>
+      </div>
+      <div class="table-wrap">
+        <table class="results-tbl">
+          <thead>
+            <tr><th>#</th><th>Nombre</th><th>Calificación</th><th>Porcentaje</th><th>Fecha</th><th>Hora</th></tr>
+          </thead>
+          <tbody>
+            ${list.map((r, i) => `
+              <tr>
+                <td>${i+1}</td>
+                <td>${r.nombre}</td>
+                <td><span class="badge ${r.calificacion >= 8 ? 'badge-high' : r.calificacion >= 6 ? 'badge-mid' : 'badge-low'}">${r.calificacion}/10</span></td>
+                <td>${r.porcentaje}%</td>
+                <td>${r.fecha}</td>
+                <td>${r.hora}${r.timeout ? ' ⏱' : ''}</td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  } catch (e) {
+    container.innerHTML = '<div class="empty"><i class="ti ti-alert-circle"></i>No se pudieron cargar los resultados.</div>';
+  }
+}
+
+function exportCSV() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const list = raw ? JSON.parse(raw) : [];
+    if (!list.length) { alert('No hay resultados para exportar.'); return; }
+    const rows = [
+      ['#','Nombre','Calificación','Porcentaje','Fecha','Hora','Tiempo agotado'],
+      ...list.map((r, i) => [i+1, r.nombre, r.calificacion, r.porcentaje+'%', r.fecha, r.hora, r.timeout ? 'Sí' : 'No'])
+    ];
+    const csv = '\uFEFF' + rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n');
+    const a = document.createElement('a');
+    a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+    a.download = 'resultados_caida_libre.csv';
+    a.click();
+  } catch (e) { alert('Error al exportar.'); }
+}
+
+/* ===== INIT ===== */
+checkEvalLock();
+</script>
+</body>
+</html>
